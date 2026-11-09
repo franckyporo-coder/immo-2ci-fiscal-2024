@@ -1,0 +1,163 @@
+/* Styles personnalisés pour SAGI IMMO FISCAL 2024 */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #1e3a8a;
+  --primary-light: #3b82f6;
+  --accent: #10b981;
+  --dark-bg: #0f172a;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+/* Scrollbar soignée */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Badges & Statuts */
+.badge-service {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.badge-cede {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.badge-rebut {
+  background-color: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+}
+
+/* Animations de transition */
+.fade-in {
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Impression professionnelle pour Tableau Fiscal & Fiches */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  .no-print, header, nav, #quick-actions, .btn-action, .search-bar, aside, #toast {
+    display: none !important;
+  }
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    font-size: 11px !important;
+  }
+  th, td {
+    border: 1px solid #333 !important;
+    padding: 4px 6px !important;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+
+  /* Si on imprime la fiche individuelle depuis la modal */
+  body.printing-plan main,
+  body.printing-plan header {
+    display: none !important;
+  }
+  body.printing-plan #modal-plan {
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+  body.printing-plan #modal-plan > div {
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  body.printing-plan #modal-plan button {
+    display: none !important;
+  }
+}
+
+
+/* ===== Droits d'accès : masquage visuel selon le niveau (le serveur applique les vraies règles) ===== */
+body.non-admin [onclick^="ouvrirFormulaireClient"],
+body.non-admin [onclick^="supprimerClient"],
+body.non-admin #tab-tables,
+body.non-admin #tab-utilisateurs { display: none !important; }
+body.droit-lecture [onclick^="ouvrirModalAjout"],
+body.droit-lecture [onclick^="editerImmo"],
+body.droit-lecture #tab-import-export { display: none !important; }
+body:not(.droit-gestion) [onclick^="supprimerImmo"],
+body:not(.droit-gestion) [onclick^="ouvrirSortie"],
+body:not(.droit-gestion) #tab-cloture { display: none !important; }
+/* Exercice clôturé : figé, on masque toute action de modification (le serveur les refuse de toute façon) */
+body.exercice-fige [onclick^="ouvrirModalAjout"],
+body.exercice-fige [onclick^="editerImmo"],
+body.exercice-fige [onclick^="supprimerImmo"],
+body.exercice-fige [onclick^="ouvrirSortie"] { display: none !important; }
+
+
+/* ===== ÉTAT SUPPLÉMENTAIRE (tableau des amortissements & inventaire des immobilisations) ===== */
+#etat-supplementaire { display: none; }
+@media print {
+  body.printing-etat > *:not(#etat-supplementaire) { display: none !important; }
+  body.printing-etat #etat-supplementaire { display: block !important; background: #fff; }
+}
+.etat-doc { background: #fff; color: #000; font-family: Arial, Helvetica, sans-serif; min-width: 900px; }
+.etat-doc .etat-entete { display: flex; justify-content: space-between; align-items: flex-start; font-size: 9px; font-weight: 700; margin-bottom: 4px; }
+.etat-doc .etat-cadre { border: 2px solid #000; border-radius: 6px; padding: 3px 14px; text-align: center; font-size: 9px; font-weight: 700; line-height: 1.5; }
+.etat-doc .etat-titre { text-align: center; font-size: 10px; font-weight: 800; margin: 2px 0 5px; }
+.etat-doc table { width: 100% !important; border-collapse: collapse !important; font-size: 8px !important; border: 2px solid #000 !important; }
+.etat-doc th, .etat-doc td { border: 1px solid #000 !important; padding: 2px 3px !important; white-space: nowrap; }
+.etat-doc th { text-align: center; font-weight: 800; text-transform: uppercase; background: #fff; }
+.etat-doc td.num { text-align: right; }
+.etat-doc td.ctr { text-align: center; }
+.etat-doc td.des { white-space: normal; }
+.etat-doc tr.grp td { font-weight: 800; }
+.etat-doc tr.tot td { font-weight: 800; border-top: 2px solid #000 !important; }
+.etat-doc tr { page-break-inside: avoid; }
+.etat-doc thead { display: table-header-group; }
+.etat-doc .etat-pied { display: flex; justify-content: space-between; font-size: 8px; margin-top: 6px; }
+#extrait-apercu .etat-doc { font-size: 11px; }
+#extrait-apercu .etat-doc table, #extrait-apercu .etat-doc .etat-entete, #extrait-apercu .etat-doc .etat-cadre, #extrait-apercu .etat-doc .etat-titre, #extrait-apercu .etat-doc .etat-pied { font-size: 11px !important; }
+
+@media print {
+  #etat-supplementaire .etat-doc { min-width: 0; }
+}
+
+/* Fenêtre « Mise à jour des immobilisations » : masquage selon les droits (le serveur applique les vraies règles) */
+body.droit-lecture [data-maj="ecriture"], body.droit-lecture [data-maj="gestion"],
+body:not(.droit-gestion) [data-maj="gestion"],
+body.exercice-fige [data-maj="ecriture"], body.exercice-fige [data-maj="gestion"] { display: none !important; }
